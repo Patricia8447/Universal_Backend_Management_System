@@ -9,8 +9,13 @@
     text-color="#fff"
     active-text-color="#ffd04b"
   >
-    <h3>通用后台管理系统</h3>
-    <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" :index="item.path" :key="item.path">
+    <h3>{{ isCollapse ? "后台" : "通用后台管理系统" }}</h3>
+    <el-menu-item
+      @click="clickMenu(item)"
+      v-for="item in noChildren"
+      :index="item.path"
+      :key="item.path"
+    >
       <i :class="'el-icon-' + item.icon"></i>
       <span slot="title">{{ item.label }}</span>
     </el-menu-item>
@@ -33,7 +38,7 @@
 <style lang="less" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-//   min-height: 400px;
+  //   min-height: 400px;
 }
 .el-menu {
   height: 100vh;
@@ -51,7 +56,6 @@
 export default {
   data() {
     return {
-      isCollapse: false,
       menu: [
         {
           path: "/",
@@ -105,11 +109,10 @@ export default {
       console.log(key, keyPath);
     },
     clickMenu(item) {
-        this.$router.push({
-            name: item.name
-        })
-
-    }
+      this.$router.push({
+        name: item.name,
+      });
+    },
   },
   computed: {
     noChildren() {
@@ -117,6 +120,9 @@ export default {
     },
     hasChildren() {
       return this.menu.filter((item) => item.children);
+    },
+    isCollapse() {
+      return this.$store.state.tab.isCollapse;
     },
   },
 };
