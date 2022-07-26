@@ -41,7 +41,7 @@
   //   min-height: 400px;
 }
 .el-menu {
-  height: 100vh;
+  height: 100%;
   border: none;
   h3 {
     color: #fff;
