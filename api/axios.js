@@ -26,9 +26,11 @@ class HttpRequest {
 
         // 添加响应拦截器
         instance.interceptors.response.use(function (response) {
+            console.log(response, 'response');
             // 对响应数据做点什么
             return response;
         }, function (error) {
+            console.log(error, 'error');
             // 对响应错误做点什么
             return Promise.reject(error);
         });
@@ -36,10 +38,10 @@ class HttpRequest {
     request(options) {
         const instance = axios.create()
         options = { ...this.getInsideConfig(), ...options }
-        this.interceptors(insatance)
+        this.interceptors(instance)
         return instance(options)
     }
 
 }
 
-export default new HttpRquest(baseUrl)
+export default new HttpRequest(baseUrl)

@@ -31,11 +31,7 @@
 
     <el-col style="margin-top: 20px" :span="16">
       <div class="num">
-        <el-card
-          v-for="item in countData"
-          :key="item.name"
-          :body-style="{ display: flex, padding: 0 }"
-        >
+        <el-card v-for="item in countData" :key="item.name" :body-style="{ padding: 0 }">
           <i
             class="icon"
             :class="`el-icon-${item.icon}`"
@@ -48,57 +44,35 @@
         </el-card>
       </div>
 
-      <el-card style="height: 280px"></el-card>
+      <el-card style="height: 280px">
+        <div style="height: 280px" ref="echarts"></div>
+      </el-card>
       <div class="graph">
-        <el-card style="height: 265px"></el-card>
-        <el-card style="height: 265px"></el-card>
+        <el-card style="height: 265px">
+          <div style="height: 240px" ref="userEcharts"></div>
+        </el-card>
+        <el-card style="height: 265px">
+          <div style="height: 240px" ref="videoEcharts"></div>
+        </el-card>
       </div>
     </el-col>
   </el-row>
 </template>
 <script>
+import { getData } from "../../api/data.js";
+import * as echarts from "echarts";
+
 /* eslint-disable */
 export default {
   name: "home",
   data() {
     return {
       userImg: require("../../src/assets/images/user.jpg"),
-      tableData: [
-        {
-          name: "oppo",
-          todayBuy: 100,
-          MonthBuy: 300,
-          totalBuy: 800,
-        },
-        {
-          name: "vivo",
-          todayBuy: 100,
-          MonthBuy: 300,
-          totalBuy: 800,
-        },
-        {
-          name: "Apple",
-          todayBuy: 100,
-          MonthBuy: 300,
-          totalBuy: 800,
-        },
-        {
-          name: "Mi",
-          todayBuy: 100,
-          MonthBuy: 300,
-          totalBuy: 800,
-        },
-        {
-          name: "Galaxy",
-          todayBuy: 100,
-          MonthBuy: 300,
-          totalBuy: 800,
-        },
-      ],
+      tableData: [],
       tableLabel: {
         name: "课程",
         todayBuy: "今日购买",
-        MonthBuy: "本月购买",
+        monthBuy: "本月购买",
         totalBuy: "总购买",
       },
       countData: [
@@ -142,29 +116,121 @@ export default {
     };
   },
   mounted() {
-    this.$http.get('/user?ID=12345')
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-  }
+    getData().then((res) => {
+      const { code, data } = res.data;
+      if (code === 20000) {
+        this.tableData = data.tableData;
+
+        const order = data.orderData;
+        const xData = order.date;
+        const keyArray = Object.keys(order.data[0]);
+        const series = [];
+
+        keyArray.forEach((key) => {
+          series.push({
+            name: key,
+            data: order.data.map((item) => item[key]),
+            type: "line",
+          });
+        });
+
+        const option = {
+          xAxis: {
+            data: xData,
+          },
+          yAxis: {},
+          legend: {
+            data: keyArray,
+          },
+          series,
+        };
+
+        const E = echarts.init(this.$refs.echarts);
+        E.setOption(option);
+
+        const userOption = {
+          legend: {
+            // 图例文字颜色
+            textStyle: {
+              color: "#333",
+            },
+          },
+          grid: {
+            left: "20%",
+          },
+          // 提示框
+          tooltip: {
+            trigger: "axis",
+          },
+          xAxis: {
+            type: "category", // 类目轴
+            data: data.userData.map((item) => item.date),
+            axisLine: {
+              lineStyle: {
+                color: "#17b3a3",
+              },
+            },
+            axisLabel: {
+              interval: 0,
+              color: "#333",
+            },
+          },
+          yAxis: [
+            {
+              type: "value",
+              axisLine: {
+                lineStyle: {
+                  color: "#17b3a3",
+                },
+              },
+            },
+          ],
+          color: ["#2ec7c9", "#b6a2de"],
+          series: [
+            {
+              name: "新增用户",
+              data: data.userData.map((item) => item.new),
+              type: "bar",
+            },
+            {
+              name: "活跃用户",
+              data: data.userData.map((item) => item.active),
+              type: "bar",
+            },
+          ],
+        };
+
+        const U = echarts.init(this.$refs.userEcharts);
+        U.setOption(userOption);
+
+        const videoOption = {
+          tooltip: {
+            trigger: "item",
+          },
+          color: [
+            "#0f78f4",
+            "#dd536b",
+            "#9462e5",
+            "#a6a6a6",
+            "#e1bb22",
+            "#39c362",
+            "#3ed1cf",
+          ],
+          series: [
+            {
+              data: data.videoData,
+              type: "pie",
+            },
+          ],
+        };
+
+        const V = echarts.init(this.$refs.videoEcharts);
+        V.setOption(videoOption);
+      }
+      console.log(data.tableData.TotalBuy);
+    });
+  },
 };
 </script>
 
-<style lang="less" scoped>
-// .home {
-//   width: 120%;
-//   height: 20px;
-// }
-// .user img {
-//   width: 110px;
-//   height: 110px;
-//   border-radius: 50%;
-// }
-
-// .userinfo {
-//   float: right;
-// }
-</style>
+<style lang="less" scoped></style>
