@@ -29,7 +29,7 @@
         v-for="(subItem, subIndex) in item.children"
         :key="subItem.path"
       >
-        <el-menu-item :index="subIndex">{{ subItem.label }}</el-menu-item>
+        <el-menu-item @click="clickMenu(subItem)" :index="subIndex">{{ subItem.label }}</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>
@@ -38,10 +38,10 @@
 <style lang="less" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-  //   min-height: 400px;
+  min-height: 400px;
 }
 .el-menu {
-  height: 100%;
+  height: 100vh;
   border: none;
   h3 {
     color: #fff;
@@ -112,6 +112,7 @@ export default {
       this.$router.push({
         name: item.name,
       });
+      this.$store.commit('selectMenu', item)
     },
   },
   computed: {
