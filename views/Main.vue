@@ -6,7 +6,7 @@
         <el-header>
           <common-header></common-header>
         </el-header>
-
+        <common-tag />
         <el-main>
           <router-view></router-view>
         </el-main>
@@ -17,6 +17,7 @@
 <script>
 import CommonAside from "../src/components/CommonAside.vue";
 import CommonHeader from "../src/components/CommonHeader.vue";
+import CommonTag from "../src/components/commonTag.vue";
 
 /* eslint-disable */
 export default {
@@ -24,6 +25,7 @@ export default {
   components: {
     CommonAside,
     CommonHeader,
+    CommonTag,
   },
   data() {
     return {};
