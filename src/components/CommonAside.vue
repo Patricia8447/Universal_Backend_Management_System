@@ -13,14 +13,14 @@
     <el-menu-item
       @click="clickMenu(item)"
       v-for="item in noChildren"
-      :index="item.path"
+      :index="item.path + ''"
       :key="item.path"
     >
       <i :class="'el-icon-' + item.icon"></i>
       <span slot="title">{{ item.label }}</span>
     </el-menu-item>
 
-    <el-submenu v-for="item in hasChildren" :index="item.path" :key="item.path">
+    <el-submenu v-for="item in hasChildren" :index="item.path + ''" :key="item.path">
       <template slot="title">
         <i :class="'el-icon-' + item.icon"></i>
         <span slot="title">{{ item.label }}</span>
@@ -29,7 +29,9 @@
         v-for="(subItem, subIndex) in item.children"
         :key="subItem.path"
       >
-        <el-menu-item @click="clickMenu(subItem)" :index="subIndex">{{ subItem.label }}</el-menu-item>
+        <el-menu-item @click="clickMenu(subItem)" :index="subIndex + ''">{{
+          subItem.label
+        }}</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>
@@ -112,7 +114,7 @@ export default {
       this.$router.push({
         name: item.name,
       });
-      this.$store.commit('selectMenu', item)
+      this.$store.commit("selectMenu", item);
     },
   },
   computed: {

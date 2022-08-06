@@ -4,23 +4,17 @@
       <el-input
         v-if="item.type === 'input'"
         :placeholder="'请输入' + item.label"
-        v-model="/* eslint-disable vue/no-mutating-props */ form[item.model]"
+        v-model="formData[item.model]"
       ></el-input>
-      <el-switch
-        v-if="item.type === 'switch'"
-        v-model="/* eslint-disable vue/no-mutating-props */ form[item.model]"
-      >
+      <el-switch v-if="item.type === 'switch'" v-model="formData[item.model]">
       </el-switch>
       <el-date-picker
         v-if="item.type === 'date'"
         type="date"
         value-format="yyyy-mm-dd"
-        v-model="/* eslint-disable vue/no-mutating-props */ form[item.label]"
+        v-model="formData[item.label]"
       ></el-date-picker>
-      <el-select
-        v-if="item.type === 'select'"
-        v-model="/* eslint-disable vue/no-mutating-props */ form[item.label]"
-      >
+      <el-select v-if="item.type === 'select'" v-model="formData[item.label]">
         <el-option
           v-for="item in item.opts"
           :key="item.value"
@@ -43,7 +37,9 @@ export default {
     inline: Boolean,
   },
   data() {
-    return {};
+    return {
+      formData: this.form,
+    };
   },
 };
 </script>

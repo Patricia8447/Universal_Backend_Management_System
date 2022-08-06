@@ -8,21 +8,25 @@
         :label="item.label"
         :width="item.width ? item.width : 125"
       >
-        <template slot-scoped="scoped">
-          <span style="margin-left: 10px">{{ scoped.row[item.prop] }}</span>
+        <template slot-scope="scope">
+          <span style="margin-left: 10px">{{ scope.row[item.prop] }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="180px">
-        <el-button size="mini" @click="handleEdit">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDelete">删除</el-button>
+      <el-table-column label="操作" min-width="180">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
+            >删除</el-button
+          >
+        </template>
       </el-table-column>
     </el-table>
 
     <el-pagination
       class="pager"
       layout="prev, pager, next"
-      :total="config.total"
-      :current-page.sync="config.page"
+      :total="localConfig.total"
+      :current-page.sync="localConfig.page"
       @current-change="changePage"
       :page-size="20"
     >
@@ -31,6 +35,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: "CommonTable",
   props: {
@@ -39,11 +44,20 @@ export default {
     config: Object,
   },
   data() {
-    return {};
+    return {
+      localConfig: this.config,
+    };
   },
   methods: {
-    handleEdit() {},
-    handleDelete() {},
+    handleEdit(row) {
+      this.$emit("edit", row);
+    },
+    handleDelete(row) {
+      this.$emit("del", row);
+    },
+    changePage(row) {
+      this.$emit("changePage", row);
+    },
   },
 };
 </script>
