@@ -17,7 +17,7 @@
         <span> <img class="user" :src="userImg" /></span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item @click.native="logOut">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -38,6 +38,14 @@ export default {
   methods: {
     handleMenu() {
       this.$store.commit("collapseMenu");
+    },
+    logOut() {
+      //清除token
+      this.$store.commit("clearToken");
+      //重置menu
+      this.$store.commit("clearMenu");
+      //跳转到login页面
+      this.$router.push("/login");
     },
   },
 
@@ -70,7 +78,7 @@ header {
 }
 
 /deep/ .el-breadcrumb__inner {
-  color: #fff ; //你想要设置的字体颜色
+  color: #fff; //你想要设置的字体颜色
   margin-left: 20px;
 }
 

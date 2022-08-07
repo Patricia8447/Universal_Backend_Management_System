@@ -12,25 +12,25 @@ export default {
         data: {
           menu: [
             {
-              path: '/',
+              path: '/home',
               name: 'home',
               label: '首页',
               icon: 's-home',
-              url: 'Home/Home'
+              url: 'home/Index'
             },
             {
               path: '/mall',
               name: 'mall',
               label: '商品管理',
               icon: 'video-play',
-              url: 'Mall/Mall'
+              url: 'mall/index'
             },
             {
               path: '/user',
               name: 'user',
               label: '用户管理',
               icon: 'user',
-              url: 'User/User'
+              url: 'user/Index'
             },
             {
               label: '其他',
@@ -41,14 +41,14 @@ export default {
                   name: 'page1',
                   label: '页面1',
                   icon: 'setting',
-                  url: 'Other/PageOne'
+                  url: 'Other/PageOne.vue'
                 },
                 {
                   path: '/page2',
                   name: 'page2',
                   label: '页面2',
                   icon: 'setting',
-                  url: 'Other/PageTwo'
+                  url: 'Other/PageTwo.vue'
                 }
               ]
             }
@@ -57,24 +57,24 @@ export default {
           message: '获取成功'
         }
       }
-    } else if (username === 'xiaoxiao' && password === 'xiaoxiao') {
+    } else if (username === 'lulu' && password === '123') {
       return {
         code: 20000,
         data: {
           menu: [
             {
-              path: '/',
+              path: '/home',
               name: 'home',
               label: '首页',
               icon: 's-home',
-              url: 'Home/Home'
+              url: 'home/Index'
             },
             {
-              path: '/video',
-              name: 'video',
+              path: '/mall',
+              name: 'mall',
               label: '商品管理',
               icon: 'video-play',
-              url: 'VideoManage/VideoManage'
+              url: 'mall/index'
             }
           ],
           token: Mock.Random.guid(),
